@@ -15,10 +15,9 @@ add_subdirectory(./libs/glfw-3.3.6)
 
 include_directories(./includes)
 
-add_executable(opengl-experimenting
+add_executable(${PROJECT_NAME}
 	./src/main.cpp 
-	./includes/glad.c 
+	./includes/glad.c
 )
 
-target_link_libraries(opengl-experimenting glfw)
-
+target_link_libraries(${PROJECT_NAME} glfw)
