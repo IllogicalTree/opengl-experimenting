@@ -78,7 +78,7 @@ static unsigned int CompileShader(unsigned int type, const std::string& source) 
 
 static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader) {
 
-	unsigned int program = glCreateProgram();
+	GLCall(unsigned int program = glCreateProgram());
 	unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
 	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 	
@@ -122,7 +122,7 @@ int main(void) {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
- 
+
     glfwSetKeyCallback(window, key_callback);
     glfwMakeContextCurrent(window);
     gladLoadGL();
@@ -157,9 +157,24 @@ int main(void) {
 	unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
 	GLCall(glUseProgram(shader));
 
+	GLCall(int location = glGetUniformLocation(shader, "u_Color"));
+	ASSERT(location != -1);
+
+	float r = 0.0f;
+	float increment = 0.05f;
     while (!glfwWindowShouldClose(window)) {
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
+		GLCall(glUniform4f(location, r, r+0.5f, r-0.5f, 1.0f))
 		GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+
+		if (r > 1.0f) {
+			increment = -0.05f;
+		} else if (r < 0.0f) {
+			increment = 0.05f;
+		}
+		r += increment;
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
