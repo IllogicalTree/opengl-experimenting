@@ -23,6 +23,7 @@ add_executable(${PROJECT_NAME}
 	./src/VertexBuffer.cpp
 	./src/VertexArray.cpp
 	./src/Shader.cpp
+	./src/Texture.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} glfw)

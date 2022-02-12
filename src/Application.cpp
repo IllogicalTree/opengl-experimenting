@@ -5,6 +5,7 @@
 #include "VertexBufferLayout.h"
 #include "Shader.h"
 #include "Debug.h"
+#include "Texture.h"
 
 static void error_callback(int error, const char* description) {
     fprintf(stderr, "Error: %s\n", description);
@@ -40,10 +41,10 @@ int main(void) {
     glfwSwapInterval(1);
  
 	float positions[] = {
-	   	-0.5f, -0.5f,
-		 0.5f, -0.5f,
-		 0.5f, 0.5f,
-		-0.5f,  0.5f,
+	   	-0.5f, -0.5f, 0.0f, 0.0f,
+		 0.5f, -0.5f, 1.0f, 0.0f,
+		 0.5f, 0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, 0.0f, 1.0f,
 	};
 
 	unsigned int indicies[] = {
@@ -51,17 +52,25 @@ int main(void) {
 		2, 3, 0
 	};
 
+	GLCall(glEnable(GL_BLEND));
+	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
 	VertexArray va;
-	VertexBuffer vb(positions, 4 * 2 * sizeof(float));
+	VertexBuffer vb(positions, 4 * 4 * sizeof(float));
 	IndexBuffer ib(indicies, 6);
 
 	VertexBufferLayout layout;
+	layout.AddFloat(2);
 	layout.AddFloat(2);
 	va.AddBuffer(vb, layout);
 
 	Shader shader("./res/shaders/basic.glsl");
 	shader.Bind();
 	shader.SetUniform4f("u_Color", 0.0f, 0.0f, 1.0f, 1.0f);
+
+	Texture texture("./res/textures/Happy_smiley_face.png");
+	texture.Bind();
+	shader.SetUniform1i("u_Texture", 0);
 
 	va.Unbind();
     vb.Unbind();
@@ -77,7 +86,7 @@ int main(void) {
 		renderer.Clear();
 		
 		shader.Bind();
-		shader.SetUniform4f("u_Color", r, 0.0f, 1.0f, 1.0f);
+		shader.SetUniform4f("u_Color", 0.0f,r, 1.0f, 1.0f);
 		
 		renderer.Draw(va, ib, shader);
 
