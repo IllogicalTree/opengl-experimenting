@@ -16,8 +16,13 @@ add_subdirectory(./libs/glfw)
 include_directories(./includes)
 
 add_executable(${PROJECT_NAME}
-	./src/main.cpp 
+	./src/Application.cpp 
 	./includes/glad.c
+	./src/Renderer.cpp
+	./src/IndexBuffer.cpp
+	./src/VertexBuffer.cpp
+	./src/VertexArray.cpp
+	./src/Shader.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} glfw)
