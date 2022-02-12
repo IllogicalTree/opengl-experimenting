@@ -1,5 +1,5 @@
 #pragma once
-#include "Renderer.h"
+#include "Debug.h"
 
 class IndexBuffer {
     private:

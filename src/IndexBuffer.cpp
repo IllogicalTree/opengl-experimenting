@@ -1,4 +1,5 @@
 #include "IndexBuffer.h"
+#include "Renderer.h"
 
 IndexBuffer::IndexBuffer(const unsigned int* indicies, unsigned int count): m_Count(count) {
     GLCall(glGenBuffers(1, &m_RendererId));

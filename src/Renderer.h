@@ -2,9 +2,14 @@
 #include <glad.h>
 #include <GLFW/glfw3.h>
 
-#define ASSERT(x) if (!(x)) __debugbreak();
-#define GLCall(call) while (glGetError() != GL_NO_ERROR);    \
-	call;                                                    \
-	ASSERT(GlLogCall(#call, __FILE__, __LINE__));
+#include "Debug.h"
+#include "VertexArray.h"
+#include "IndexBuffer.h"
+#include "Shader.h"
 
-bool GlLogCall(const char* function, const char* file, int line);
+class Renderer {
+	private:
+	public:
+		void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+		void Clear() const;
+};
